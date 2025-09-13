@@ -1,8 +1,5 @@
 # Oscilloscope
 
-## 정의
-- **진동 파형을 보는 장비**
-
 ## Oscilloscope 구조
 ### Probe → Attenuator
 - 프로브에서 신호가 처음 도착
