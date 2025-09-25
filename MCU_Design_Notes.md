@@ -8,3 +8,18 @@
 5. 디버거 실행 후 변수 값 확인
     - STM32CubeIDE 기준 Expression에 변수 이름을 넣고 확인
 
+## 디버깅
+### printf 문에 대한 디버깅
+- 쓰레드를 돌리거나 여러가지를 동시에 보는 상황일 때 활용
+### Live Expression
+- Live로 보기 위해서 전역변수로 설정해야함
+    - 전역으로 하면 컴파일 단계에서 메모리에 잡아줌
+    - Main 문 안에 들어가면 스택 공간으로 들어감
+- 디버깅 시에는 지역 함수도 확인 가능함
+
+## 실수 출력하는 방법
+- ARM Cortex-M 계열 MCU 개발할 때, 보통 newlib 같은 C 라이브러리를 씀
+    - 이 라이브러리는 기본적으로 코드 크기를 줄이기 위해 printf의 실수(float, double) 출력 기능을 제외시켜 빌드
+    - printf("%f", 3.14); 쓰면 출력이 안 되거나 ? 같은 이상한 값이 나오게 됨.
+- **해결방법** : C++ build settings → MCC GCC Linker  → -u _printf_float 작성
+

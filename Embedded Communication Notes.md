@@ -11,14 +11,22 @@
 
 ## UART 통신
 ### 사용하는 방법
-![aUART 핀 연결 다이어그램](./Pictures/UART_Picture.png)
+![UART 핀 연결 다이어그램](./Pictures/UART_Picture.png)
 #### 보내는 속도, 받는 속도와 데이터 크기를 통일해야함
 1. 시작 포인트 : Start Bit/Condition [1 Bit] → 0 [Always LOW]
 2. 실제 Data : Data Bit → 5~9 bit 설정 가능
     - 사용되지 않는 비트는 전송 X → 수신기에서 0으로 처리
 3. 오류 검출 : Parity Bit [1 Bit]
+    - UART는 오류가 잘 발생하는 편임.
+    - 속도가 느리면 오류 줄고 빠르면 오류 늘음
 4. 끝나는 포인트 : Stop Bit [1~2 Bit 설정가능] → 1 [Always HIGH]
 #### 수신기에서 받은 포맷을 읽고 원래의 데이터로 복원
+
+### FTDI
+- 드라이버를 활용하여 USB UART(직렬) 통신을 USB로 변환해주는 역할.
+- 변환순서 : UART - FTDI 모듈 - USB - Xshell 활용해서 데이터를 받음.
+- 보드에 FTDI 칩을 다는 경우도 있음
+- 드라이버는 C로 구성 → 크로스 컴파일을 활용하여 모듈로서 사용함
 
 ## ATmega 128 송수신 구조
 ### 송수신 I/O 주소 같음
@@ -30,11 +38,11 @@
 ### 수신
 1. UDRn에서 읽으면 RXBn의 내용 반환
 
----------------------------------------------------------------
+---------------------------------------------------
 
 # 2. SPI
 
-![aUART 핀 연결 다이어그램](./Pictures/SPI_Picture.png)
+![UART 핀 연결 다이어그램](./Pictures/SPI_Picture.png)
 
 ## 특징
 1. Full-Duplex, 직렬 통신
@@ -86,12 +94,40 @@
 - 센서
 - SD 카드 인터페이스
 
-# 3. TWI
+---------------------------------------------------
+
+# 3. TWI, I2C
 
 ## 특징
-1. Only Two Bus Lines Needed
+1. Only Two Bus Lines Needed [SDA, SCL]
+    - 128개의 서로 다른 장치 연결 가능 [7 bit 주소 공간]
+    - 각 라인에 풀업저항[2KΩ ~ 10KΩ] 필요 [Open Drain/Collector]
+        - Wired-AND 구조 : 
 2. Master/Slave Operation
-3. 
+3. 직렬 통신, Half-Duplex, 비동기
+4. Plug and play, Hot Swap
 
+## Master/Slave, Transmitter/Receiver
+| 용어 (Term)   | 설명 (Description) |
+|---------------|--------------------|
+| **Master**    | 전송을 시작하고 종료하는 장치. 또한 SCL 클록을 생성함 |
+| **Slave**     | Master에 의해 주소 지정되는 장치 |
+| **Transmitter** | 버스에 데이터를 전송하는 장치 |
+| **Receiver**  | 버스에서 데이터를 읽는 장치 |
+
+## 통신 개념
+### 1. Start/Stop Condition
+![UART 핀 연결 다이어그램](./Pictures/Start,Stop_Condition.jpg)
+
+### 2. Wired AND 구조
+
+## 통신과정
+1. 하나 이상의 TWI 기기가 0을 출력 TWI 버스
+2. 
+
+
+## 주의사항
+1. SCL이 Rising Edge일 때 Data 읽음
+    - Rising Edge 되기 전 데이터 설정 필요
 
 
